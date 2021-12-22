@@ -2,7 +2,10 @@
 	"pages": [{
 		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "uni-app"
+			"navigationStyle": "custom",
+			"app-plus": {
+				"titleNView": false
+			}
 		}
 	}],
 	"globalStyle": {
@@ -13,5 +16,9 @@
 		"app-plus": {
 			"background": "#efeff4"
 		}
+	},
+	"easycom": {
+		"autoscan": true,
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
 	}
 }
