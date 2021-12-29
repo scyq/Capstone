@@ -11,6 +11,18 @@
 			<uni-calendar ref="calendar" :insert="false" @confirm="confirmCalendar" />
 			<uni-icons type="calendar" size="30" @click="openCalendar"></uni-icons>
 		</view>
+		<view class="flex-row slider" v-else-if="answerWidgets.type === 'numberSelection'">
+			<slider
+				style="width: 100%;"
+				:min="answerWidgets.widgets[0]"
+				:max="answerWidgets.widgets[1]"
+				@change="sliderChange"
+				step="1"
+				show-value="true"
+				:value="(value < answerWidgets.widgets[0] && value > answerWidgets.widgets[1]) ? 1 : value"
+			/>
+			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
+		</view>
 	</view>
 </template>
 
@@ -19,7 +31,7 @@ export default {
 	name: 'tsu-answer',
 	data() {
 		return {
-			value: '',
+			value: ''
 		};
 	},
 	props: {
@@ -50,6 +62,9 @@ export default {
 		},
 		nextDialog() {
 			this.$emit('nextDialog', this.value);
+		},
+		sliderChange(e) {
+			this.value = e.detail.value;
 		}
 	},
 	computed: {}
@@ -81,5 +96,9 @@ export default {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+}
+
+.slider {
+	width: 70%;
 }
 </style>

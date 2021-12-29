@@ -10,24 +10,46 @@
 
 <script>
 const queries = [
+	// {
+	// 	id: '1',
+	// 	text: '您的编号是？',
+	// 	type: 'textfield',
+	// 	widgets: null
+	// },
+	// {
+	// 	id: '2',
+	// 	text: '您的性别？',
+	// 	type: 'buttons',
+	// 	widgets: ['男', '女']
+	// },
+	// {
+	// 	id: '3',
+	// 	text: '您的生日',
+	// 	type: 'date'
+	// },
+	// {
+	// 	id: '4',
+	// 	text: '您所在的年级',
+	// 	type: 'buttons',
+	// 	widgets: ['初一', '初二', '初三']
+	// },
+	// {
+	// 	id: '5',
+	// 	text: '您所在的班级',
+	// 	type: 'textfield',
+	// 	widgets: null
+	// },
+	// {
+	// 	id: '6',
+	// 	text: '您有没有兄弟姐妹',
+	// 	type: 'buttons',
+	// 	widgets: ['有', '没有']
+	// },
 	{
-		text: '您的编号是？',
-		type: 'textfield',
-		widgets: null
-	},
-	{
-		text: '您的性别？',
-		type: 'buttons',
-		widgets: ['男', '女']
-	},
-	{
-		text: '您的生日',
-		type: 'date'
-	},
-	{
-		text: '您所在的年级',
-		type: 'buttons',
-		widgets: ['初一', '初二', '初三']
+		id: '6.1',
+		text: '您有多少个哥哥',
+		type: 'numberSelection',
+		widgets: [1, 6]
 	}
 ];
 
