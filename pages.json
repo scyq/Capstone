@@ -1,5 +1,14 @@
 {
 	"pages": [{
+		"path": "pages/welcome/welcome",
+		"style": {
+			"navigationStyle": "custom",
+			"app-plus": {
+				"titleNView": false
+			}
+		}
+
+	}, {
 		"path": "pages/index/index",
 		"style": {
 			"navigationStyle": "custom",

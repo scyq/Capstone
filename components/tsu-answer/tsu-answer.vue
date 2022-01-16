@@ -19,8 +19,16 @@
 				@change="sliderChange"
 				step="1"
 				show-value="true"
-				:value="(value < answerWidgets.widgets[0] && value > answerWidgets.widgets[1]) ? 1 : value"
+				:value="1"
 			/>
+			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
+		</view>
+		<view v-else-if="answerWidgets.type === 'city'">
+			<view v-if="citySelector" class="whiteMask"><t-index-address class="citySelector" @select="selectCity"></t-index-address></view>
+			<uni-icons type="location" size="30" @click="openCitySelector"></uni-icons>
+		</view>
+		<view class="flex-row" v-else-if="answerWidgets.type === 'numberInput'">
+			<uni-number-box :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" :value="answerWidgets.widgets[2]" @change="numberInputChange"></uni-number-box>
 			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
 		</view>
 	</view>
@@ -31,7 +39,8 @@ export default {
 	name: 'tsu-answer',
 	data() {
 		return {
-			value: ''
+			value: '',
+			citySelector: false
 		};
 	},
 	props: {
@@ -39,13 +48,18 @@ export default {
 			type: Object,
 			default: () => {
 				return {
+					text: 'default',
 					type: 'textfield',
-					widgets: null
+					widgets: null,
+					side: null
 				};
 			}
 		}
 	},
 	methods: {
+		afterOption() {
+			this.value = '';
+		},
 		confirmCalendar(e) {
 			this.value = e.fulldate;
 			this.nextDialog();
@@ -61,10 +75,28 @@ export default {
 			this.value = e;
 		},
 		nextDialog() {
-			this.$emit('nextDialog', this.value);
+			let res = { value: this.value };
+			if (this.answerWidgets.side) {
+				if (this.answerWidgets.side[this.value]) {
+					res.side = this.answerWidgets.side[this.value];
+				}
+			}
+			this.afterOption();
+			this.$emit('nextDialog', res);
 		},
 		sliderChange(e) {
 			this.value = e.detail.value;
+		},
+		numberInputChange(e) {
+			this.value = e;
+		},
+		selectCity(data) {
+			this.value = `${data.province} ${data.name}`;
+			this.citySelector = false;
+			this.nextDialog();
+		},
+		openCitySelector() {
+			this.citySelector = true;
 		}
 	},
 	computed: {}
@@ -100,5 +132,20 @@ export default {
 
 .slider {
 	width: 70%;
+}
+
+.whiteMask {
+	position: fixed;
+	top: 0;
+	background: white;
+	width: 100vw;
+	height: 100vh;
+}
+
+.citySelector {
+	display: fixed;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
 }
 </style>
