@@ -1,10 +1,12 @@
 <template>
 	<view class="chat">
-		<u-navbar @leftClick="backToWelcome()"></u-navbar>
-		<view class="container">
-			<tsu-dialog v-for="(dialog, index) of dialogs" :key="dialog" :direction="getDirection(index)">{{ dialog }}</tsu-dialog>
-		</view>
-		<tsu-answer @nextDialog="nextDialog" :answerWidgets="answerWidgets"></tsu-answer>
+		<u-navbar @leftClick="backToWelcome()" rightIcon="setting"></u-navbar>
+		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
+			<view id="dialogs" class="dialog-container">
+				<tsu-dialog v-for="(dialog, index) of dialogs" :key="dialog" :direction="getDirection(index)">{{ dialog }}</tsu-dialog>
+			</view>
+		</scroll-view>
+		<tsu-answer :answerHeight="answerHeight" @nextDialog="nextDialog" :answerWidgets="answerWidgets"></tsu-answer>
 	</view>
 </template>
 
@@ -20,16 +22,30 @@ export default {
 	},
 	data() {
 		return {
+			scrollTop: 0,
+			answerHeight: '160rpx',
 			queries: null,
 			answerWidgets: {
 				type: 'textfield',
 				widgets: null
 			},
-			queryIndex: 7,
+			queryIndex: 0,
 			dialogs: []
 		};
 	},
 	methods: {
+		scrollToBottom() {
+			let that = this;
+			let query = uni.createSelectorQuery();
+			query.select('#scrollview').boundingClientRect();
+			query.select('#dialogs').boundingClientRect();
+			query.exec(res => {
+				console.log(res);
+				if (res[1].height > res[0].height) {
+					that.scrollTop = res[1].height - res[0].height + 20;
+				}
+			});
+		},
 		backToWelcome() {
 			uni.navigateTo({
 				url: '../welcome/welcome'
@@ -53,7 +69,10 @@ export default {
 		}
 	},
 	computed: {},
-	components: {}
+	components: {},
+	updated() {
+		this.scrollToBottom();
+	}
 };
 </script>
 
@@ -61,11 +80,21 @@ export default {
 .chat {
 	background-color: #fefaf1;
 	height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
 }
 
 .container {
-	padding: 20px;
+	margin-top: 10rpx;
 	font-size: 14px;
 	line-height: 24px;
+	height: auto !important;
+	max-height: 80vh;
+	overflow: auto;
+}
+
+.dialog-container {
+	padding-bottom: 20rpx;
 }
 </style>

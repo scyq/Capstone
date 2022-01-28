@@ -48,7 +48,7 @@ export default {
 }
 
 .right {
-	background-color: rgba(72, 64, 149, 1);
+	background-color: #2EBFAB;
 	border-radius: 20rpx 20rpx 0 20rpx;
 	color: white;
 	text-align: right;

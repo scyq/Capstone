@@ -1,26 +1,18 @@
 <template>
 	<view class="answer">
 		<view class="textfield" v-if="answerWidgets.type === 'textfield'">
-			<u--input style="margin-right: 40rpx;" placeholder="请输入内容" border="surround" v-model="value" @change="changeValue"></u--input>
+			<u--input style="margin-right: 40rpx; border: 1.12801px solid #efeff4;" placeholder="请输入..." border="surround" v-model="value" @change="changeValue"></u--input>
 			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'buttons'">
-			<u-button v-for="(btn, index) of answerWidgets.widgets" type="primary" :text="btn" :key="index" @click="clickBtn(btn)"></u-button>
+			<u-button class="btn" v-for="(btn, index) of answerWidgets.widgets" type="primary" :text="btn" :key="index" @click="clickBtn(btn)"></u-button>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'date'">
 			<uni-calendar ref="calendar" :insert="false" @confirm="confirmCalendar" />
 			<uni-icons type="calendar" size="30" @click="openCalendar"></uni-icons>
 		</view>
 		<view class="flex-row slider" v-else-if="answerWidgets.type === 'numberSelection'">
-			<slider
-				style="width: 100%;"
-				:min="answerWidgets.widgets[0]"
-				:max="answerWidgets.widgets[1]"
-				@change="sliderChange"
-				step="1"
-				show-value="true"
-				:value="1"
-			/>
+			<slider style="width: 100%;" :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" @change="sliderChange" step="1" show-value="true" :value="1" />
 			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
 		</view>
 		<view v-else-if="answerWidgets.type === 'city'">
@@ -109,18 +101,29 @@ export default {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	background: #ffffff;
+	background: transparent;
 	position: fixed;
 	bottom: 0;
 	z-index: 99;
 	width: 100vw;
-	height: 160rpx;
+	height: 18vh;
+}
+
+.btn {
+	background-color: #ffffff;
+	color: #000000;
+	border: none;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+	max-width: 100px;
+	flex: 1;
 }
 
 .flex-row {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	width: 100%;
+	justify-content: center;
 }
 
 .textfield {
