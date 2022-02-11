@@ -1,8 +1,8 @@
 <template>
 	<view class="answer">
 		<view class="textfield" v-if="answerWidgets.type === 'textfield'">
-			<u--input style="margin-right: 40rpx; border: 1.12801px solid #efeff4;" placeholder="请输入..." border="surround" v-model="value" @change="changeValue"></u--input>
-			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
+			<input class="uni-input text-input" confirm-type="search" placeholder="请输入..." v-model="value" @input="changeValue"/>
+			<image class="confirm-btn" src="../../static/arrow.png" @click="nextDialog"></image>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'buttons'">
 			<u-button class="btn" v-for="(btn, index) of answerWidgets.widgets" type="primary" :text="btn" :key="index" @click="clickBtn(btn)"></u-button>
@@ -13,7 +13,7 @@
 		</view>
 		<view class="flex-row slider" v-else-if="answerWidgets.type === 'numberSelection'">
 			<slider style="width: 100%;" :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" @change="sliderChange" step="1" show-value="true" :value="1" />
-			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
+			<image class="confirm-btn" src="../../static/arrow.png" @click="nextDialog"></image>
 		</view>
 		<view v-else-if="answerWidgets.type === 'city'">
 			<view v-if="citySelector" class="whiteMask"><t-index-address class="citySelector" @select="selectCity"></t-index-address></view>
@@ -21,7 +21,7 @@
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'numberInput'">
 			<uni-number-box :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" :value="answerWidgets.widgets[2]" @change="numberInputChange"></uni-number-box>
-			<uni-icons type="paperplane" size="30" @click="nextDialog"></uni-icons>
+			<image class="confirm-btn" src="../../static/arrow.png" @click="nextDialog"></image>
 		</view>
 	</view>
 </template>
@@ -64,7 +64,7 @@ export default {
 			this.nextDialog();
 		},
 		changeValue(e) {
-			this.value = e;
+			this.value = e.tagert.value;
 		},
 		nextDialog() {
 			let res = { value: this.value };
@@ -97,6 +97,7 @@ export default {
 
 <style>
 .answer {
+	padding-bottom: 40rpx;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -106,7 +107,7 @@ export default {
 	bottom: 0;
 	z-index: 99;
 	width: 100vw;
-	height: 18vh;
+	height: 8vh;
 }
 
 .btn {
@@ -118,6 +119,11 @@ export default {
 	flex: 1;
 }
 
+.confirm-btn {
+	width: 60rpx;
+	height: 60rpx;
+}
+
 .flex-row {
 	display: flex;
 	flex-direction: row;
@@ -126,8 +132,16 @@ export default {
 	justify-content: center;
 }
 
+.text-input {
+	margin-right: 40rpx;
+	border: 1.12801px solid #efeff4;
+	background-color: #ffffff;
+	padding: 20rpx;
+	border-radius: 30rpx;
+	min-width: 60vw;
+}
+
 .textfield {
-	width: 80%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;

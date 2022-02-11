@@ -37,7 +37,7 @@ export default {
 	padding: 20rpx;
 	width: fit-content;
 	background: transparent;
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px 0px;
 	display: flex;
 	flex-direction: row;
 }

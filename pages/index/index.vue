@@ -1,6 +1,10 @@
 <template>
 	<view class="chat">
-		<u-navbar @leftClick="backToWelcome()" rightIcon="setting"></u-navbar>
+		<u-navbar rightIcon="setting" height="66px">
+			<view class="u-nav-slot" slot="left">
+				<image class="robot-avatar" src="../../static/robot1.png"></image>
+			</view>
+		</u-navbar>
 		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
 			<view id="dialogs" class="dialog-container">
 				<tsu-dialog v-for="(dialog, index) of dialogs" :key="dialog" :direction="getDirection(index)">{{ dialog }}</tsu-dialog>
@@ -45,11 +49,6 @@ export default {
 					that.scrollTop = res[1].height - res[0].height + 20;
 				}
 			});
-		},
-		backToWelcome() {
-			uni.navigateTo({
-				url: '../welcome/welcome'
-			})({});
 		},
 		nextDialog(params) {
 			this.addDialog(params.value);
@@ -96,5 +95,10 @@ export default {
 
 .dialog-container {
 	padding-bottom: 20rpx;
+}
+
+.robot-avatar {
+	width: 50px;
+	height: 50px;
 }
 </style>
