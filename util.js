@@ -18,7 +18,20 @@ export function getQueries() {
 		widgets: [1, 6]
 	}];
 
-	return [{
+	const ifShared = [{
+			text: '您是和谁分享分享的？',
+			type: 'buttons',
+			widgets: ['爸爸', '妈妈', '其他家人', '老师', '同学', '朋友']
+		},
+		{
+			text: '分享对象的性别是？',
+			type: 'buttons',
+			widgets: ['男', '女']
+		}
+	]
+
+	return [
+		{
 			text: '您的编号是？',
 			type: 'textfield',
 			widgets: null
@@ -85,9 +98,58 @@ export function getQueries() {
 			type: 'buttons',
 			widgets: ['初婚', '再婚', '复婚', '离异', '丧偶', '其它']
 		},
+		{
+			text: '紧张？',
+			type: 'rating',
+		},
+		{
+			text: '害怕？',
+			type: 'rating',
+		},
+		{
+			text: '担心？',
+			type: 'rating',
+		},
+		{
+			text: '焦虑？',
+			type: 'rating',
+		},
+		{
+			text: '生气？',
+			type: 'rating',
+		},
+		{
+			text: '愤怒？',
+			type: 'rating',
+		},
+		{
+			text: '敌意？',
+			type: 'rating',
+		},
+		{
+			text: '难过？',
+			type: 'rating',
+		},
+		{
+			text: '沮丧？',
+			type: 'rating',
+		},
+		{
+			text: '失望？',
+			type: 'rating',
+		},
+		{
+			text: '今天你跟其他人分享你不开心、不愉快的心情了吗？',
+			type: 'buttons',
+			widgets: ['有', '没有'],
+			side: {
+				'有': ifShared,
+				'没有': null
+			}
+		},
 	];
 }
 
+export function getDailyScale() {
 
-
-const main = [];
+}

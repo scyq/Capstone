@@ -1,11 +1,11 @@
 <template>
 	<view class="answer">
 		<view class="textfield" v-if="answerWidgets.type === 'textfield'">
-			<input class="uni-input text-input" confirm-type="search" placeholder="请输入..." v-model="value" @input="changeValue"/>
-			<image class="confirm-btn" src="../../static/arrow.png" @click="nextDialog"></image>
+			<input class="uni-input text-input" confirm-type="search" placeholder="请输入..." v-model="value" @input="changeValue" />
+			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'buttons'">
-			<u-button class="btn" v-for="(btn, index) of answerWidgets.widgets" type="primary" :text="btn" :key="index" @click="clickBtn(btn)"></u-button>
+			<u-button class="common-btn btn" v-for="(btn, index) of answerWidgets.widgets" type="primary" :text="btn" :key="index" @click="clickBtn(btn)"></u-button>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'date'">
 			<uni-calendar ref="calendar" :insert="false" @confirm="confirmCalendar" />
@@ -13,7 +13,7 @@
 		</view>
 		<view class="flex-row slider" v-else-if="answerWidgets.type === 'numberSelection'">
 			<slider style="width: 100%;" :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" @change="sliderChange" step="1" show-value="true" :value="1" />
-			<image class="confirm-btn" src="../../static/arrow.png" @click="nextDialog"></image>
+			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
 		</view>
 		<view v-else-if="answerWidgets.type === 'city'">
 			<view v-if="citySelector" class="whiteMask"><t-index-address class="citySelector" @select="selectCity"></t-index-address></view>
@@ -21,7 +21,10 @@
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'numberInput'">
 			<uni-number-box :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" :value="answerWidgets.widgets[2]" @change="numberInputChange"></uni-number-box>
-			<image class="confirm-btn" src="../../static/arrow.png" @click="nextDialog"></image>
+			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
+		</view>
+		<view class="flex-row" v-else-if="answerWidgets.type === 'rating'">
+			<u-button class="common-btn rating-btn" v-for="(num, index) of [1, 2, 3, 4, 5]" type="primary" :text="num" :key="index" @click="clickBtn(num)"></u-button>
 		</view>
 	</view>
 </template>
@@ -110,11 +113,14 @@ export default {
 	height: 8vh;
 }
 
-.btn {
+.common-btn {
 	background-color: #ffffff;
 	color: #000000;
 	border: none;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.btn {
 	max-width: 100px;
 	flex: 1;
 }
@@ -164,5 +170,11 @@ export default {
 	top: 0;
 	width: 100vw;
 	height: 100vh;
+}
+
+.rating-btn {
+	width: 80rpx;
+	height: 80rpx;
+	font-weight: bold;
 }
 </style>

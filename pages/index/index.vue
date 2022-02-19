@@ -1,15 +1,21 @@
 <template>
 	<view class="chat">
 		<u-navbar rightIcon="setting" height="66px">
-			<view class="u-nav-slot" slot="left">
-				<image class="robot-avatar" src="../../static/robot1.png"></image>
-			</view>
+			<view class="u-nav-slot" slot="left"><image class="robot-avatar" src="../../static/robot1.png"></image></view>
+			<view class="u-nav-slot" style="display: flex; flex-direction: column; align-items: center;" slot="right"><uni-icons type="gear" size="30"></uni-icons></view>
 		</u-navbar>
 		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
 			<view id="dialogs" class="dialog-container">
-				<tsu-dialog v-for="(dialog, index) of dialogs" :key="dialog" :direction="getDirection(index)">{{ dialog }}</tsu-dialog>
+				<tsu-dialog v-for="(dialog, index) of dialogs" :key="index" :direction="getDirection(index)">{{ dialog }}</tsu-dialog>
 			</view>
 		</scroll-view>
+		<view v-if="showLoading" class="loading-wrapp">
+			<view class="loading-ball" style="background: #2153F9;"></view>
+			<view class="loading-ball" style="background: #9C0CE8;"></view>
+			<view class="loading-ball" style="background: #FF0000;"></view>
+			<view class="loading-ball" style="background: #E8750C;"></view>
+			<view style="color: rgba(0, 0, 0, 0.25); margin-left: 8rpx;">正在输入...</view>
+		</view>
 		<tsu-answer :answerHeight="answerHeight" @nextDialog="nextDialog" :answerWidgets="answerWidgets"></tsu-answer>
 	</view>
 </template>
@@ -34,7 +40,8 @@ export default {
 				widgets: null
 			},
 			queryIndex: 0,
-			dialogs: []
+			dialogs: [],
+			showLoading: false
 		};
 	},
 	methods: {
@@ -44,21 +51,26 @@ export default {
 			query.select('#scrollview').boundingClientRect();
 			query.select('#dialogs').boundingClientRect();
 			query.exec(res => {
-				console.log(res);
 				if (res[1].height > res[0].height) {
 					that.scrollTop = res[1].height - res[0].height + 20;
 				}
 			});
 		},
 		nextDialog(params) {
+			const loadingAnimationTime = 600;
 			this.addDialog(params.value);
-			if (params.side) {
-				this.queries.splice(this.queryIndex + 1, 0, ...params.side);
-			}
-			this.queryIndex++;
-			const toAsk = this.queries[this.queryIndex];
-			this.addDialog(toAsk.text);
-			this.answerWidgets = toAsk;
+			this.showLoading = true;
+			setTimeout(() => {
+				// 增加一个子问题
+				if (params.side) {
+					this.queries.splice(this.queryIndex + 1, 0, ...params.side);
+				}
+				this.queryIndex++;
+				const toAsk = this.queries[this.queryIndex];
+				this.addDialog(toAsk.text);
+				this.answerWidgets = toAsk;
+				this.showLoading = false;
+			}, loadingAnimationTime);
 		},
 		addDialog(text) {
 			this.dialogs.push(text);
@@ -88,8 +100,7 @@ export default {
 	margin-top: 10rpx;
 	font-size: 14px;
 	line-height: 24px;
-	height: auto !important;
-	max-height: 80vh;
+	height: 76vh;
 	overflow: auto;
 }
 
@@ -100,5 +111,49 @@ export default {
 .robot-avatar {
 	width: 50px;
 	height: 50px;
+}
+
+.loading-wrapp {
+	display: flex;
+	margin: 20rpx 0 20rpx 10vw;
+	flex-direction: row;
+	align-items: center;
+}
+
+@keyframes loadingInput {
+	0 {
+		transform: translate(0, 0);
+	}
+
+	50% {
+		transform: translate(0, 6px);
+	}
+
+	100% {
+		transform: translate(0, 0);
+	}
+}
+
+.loading-wrapp .loading-ball:nth-last-child(2) {
+	animation: loadingInput 0.6s 0.1s linear infinite;
+}
+
+.loading-wrapp .loading-ball:nth-last-child(3) {
+	animation: loadingInput 0.6s 0.2s linear infinite;
+}
+
+.loading-wrapp .loading-ball:nth-last-child(4) {
+	animation: loadingInput 0.6s 0.3s linear infinite;
+}
+
+.loading-wrapp .loading-ball:nth-last-child(5) {
+	animation: loadingInput 0.6s 0.4s linear infinite;
+}
+
+.loading-ball {
+	width: 18rpx;
+	height: 18rpx;
+	border-radius: 50%;
+	margin: 8rpx;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<view class="bubble" :class="{ rightBubble: direction === 'right' }">
 		<view class="message" :class="{ left: direction === 'left', right: direction === 'right' }">
-			<slot></slot>
+			<slot style="float: left;"></slot>
 			<view v-if="direction === 'right'" style="margin-left: 8rpx;"><uni-icons type="compose" color="white" size="20"></uni-icons></view>
 		</view>
 	</view>
@@ -40,6 +40,10 @@ export default {
 	box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px 0px;
 	display: flex;
 	flex-direction: row;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;
+	max-width: 40vw;
 }
 
 .left {
