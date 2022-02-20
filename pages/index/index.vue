@@ -6,7 +6,7 @@
 		</u-navbar>
 		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
 			<view id="dialogs" class="dialog-container">
-				<tsu-dialog v-for="(dialog, index) of dialogs" :key="index" :direction="getDirection(index)">{{ dialog }}</tsu-dialog>
+				<tsu-dialog v-for="(dialog, index) of dialogs" :key="index" :direction="dialog.direction">{{ dialog.text }}</tsu-dialog>
 			</view>
 		</scroll-view>
 		<view v-if="showLoading" class="loading-wrapp">
@@ -21,19 +21,18 @@
 </template>
 
 <script>
-import { getQueries } from '../../util.js';
+import { getQueries, getDailyScale } from '../../util.js';
 
 export default {
 	onLoad() {
-		this.queries = getQueries();
-		const firstDialog = this.queries[this.queryIndex];
-		this.addDialog(firstDialog.text);
-		this.answerWidgets = firstDialog;
+		this.queries = this.getQueriesBySource(this.querySource);
+		this.askQuestion();
 	},
 	data() {
 		return {
 			scrollTop: 0,
 			answerHeight: '160rpx',
+			querySource: 'daily', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
 			queries: null,
 			answerWidgets: {
 				type: 'textfield',
@@ -45,12 +44,49 @@ export default {
 		};
 	},
 	methods: {
+		askQuestion(queryIndex) {
+			let toAsk = this.queries[this.queryIndex];
+			this.addDialog({ text: toAsk.text, direction: 'left' });
+			this.answerWidgets = toAsk;
+			while (toAsk.post) {
+				this.queryIndex++;
+				toAsk = this.queries[this.queryIndex];
+				this.addDialog({ text: toAsk.text, direction: 'left' });
+				this.answerWidgets = toAsk;
+			}
+		},
+		getQueriesBySource(source) {
+			let _queries;
+			switch (this.querySource) {
+				case 'information':
+					_queries = getQueries();
+					break;
+				case 'daily':
+					_queries = getDailyScale();
+					break;
+				default:
+					_queries = getQueries();
+					break;
+			}
+			return _queries;
+		},
 		scrollToBottom() {
 			let that = this;
 			let query = uni.createSelectorQuery();
 			query.select('#scrollview').boundingClientRect();
 			query.select('#dialogs').boundingClientRect();
 			query.exec(res => {
+				// if (res[1].height > res[0].height) {
+				// 	const tweenDuration = 50;
+				// 	const scrollDistance = res[1].height - res[0].height - that.scrollTop;
+				// 	const velocity = scrollDistance / tweenDuration;
+				// 	let tween = setTimeout(() => {
+				// 		that.scrollTop += velocity;
+				// 	}, 1);
+				// 	setInterval(() => {
+				// 		clearTimeout(tween);
+				// 	}, tweenDuration);
+				// }
 				if (res[1].height > res[0].height) {
 					that.scrollTop = res[1].height - res[0].height + 20;
 				}
@@ -58,7 +94,7 @@ export default {
 		},
 		nextDialog(params) {
 			const loadingAnimationTime = 600;
-			this.addDialog(params.value);
+			this.addDialog({ text: params.value, direction: 'right' });
 			this.showLoading = true;
 			setTimeout(() => {
 				// 增加一个子问题
@@ -66,17 +102,23 @@ export default {
 					this.queries.splice(this.queryIndex + 1, 0, ...params.side);
 				}
 				this.queryIndex++;
-				const toAsk = this.queries[this.queryIndex];
-				this.addDialog(toAsk.text);
-				this.answerWidgets = toAsk;
+				if (this.queryIndex >= this.queries.length) {
+					switch (this.querySource) {
+						case 'information':
+							this.querySource = 'daily';
+							break;
+						default:
+							break;
+					}
+					this.queryIndex = 0;
+					this.queries = this.getQueriesBySource(this.querySource);
+				}
+				this.askQuestion();
 				this.showLoading = false;
 			}, loadingAnimationTime);
 		},
-		addDialog(text) {
-			this.dialogs.push(text);
-		},
-		getDirection(index) {
-			return index & 1 ? 'right' : 'left';
+		addDialog(dialog) {
+			this.dialogs.push(dialog);
 		}
 	},
 	computed: {},

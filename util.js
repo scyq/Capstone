@@ -1,3 +1,4 @@
+// 信息收集问卷内容
 export function getQueries() {
 
 	const sideQueries5 = [{
@@ -18,20 +19,7 @@ export function getQueries() {
 		widgets: [1, 6]
 	}];
 
-	const ifShared = [{
-			text: '您是和谁分享分享的？',
-			type: 'buttons',
-			widgets: ['爸爸', '妈妈', '其他家人', '老师', '同学', '朋友']
-		},
-		{
-			text: '分享对象的性别是？',
-			type: 'buttons',
-			widgets: ['男', '女']
-		}
-	]
-
-	return [
-		{
+	return [{
 			text: '您的编号是？',
 			type: 'textfield',
 			widgets: null
@@ -97,6 +85,28 @@ export function getQueries() {
 			text: '您父亲的婚姻状况是什么',
 			type: 'buttons',
 			widgets: ['初婚', '再婚', '复婚', '离异', '丧偶', '其它']
+		}
+	];
+}
+
+// 日常情绪调查问卷
+export function getDailyScale() {
+
+	const ifShared = [{
+			text: '您是和谁分享分享的？',
+			type: 'buttons',
+			widgets: ['爸爸', '妈妈', '其他家人', '老师', '同学', '朋友']
+		},
+		{
+			text: '分享对象的性别是？',
+			type: 'buttons',
+			widgets: ['男', '女']
+		}
+	];
+
+	return [{
+			text: '今天你在多大程度上经历下面的情绪？',
+			post: true
 		},
 		{
 			text: '紧张？',
@@ -148,8 +158,4 @@ export function getQueries() {
 			}
 		},
 	];
-}
-
-export function getDailyScale() {
-
 }
