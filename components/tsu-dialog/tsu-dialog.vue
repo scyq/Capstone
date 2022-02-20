@@ -43,7 +43,7 @@ export default {
 	word-wrap: break-word;
 	word-break: break-all;
 	overflow: hidden;
-	max-width: 40vw;
+	max-width: 50vw;
 }
 
 .left {
@@ -52,7 +52,7 @@ export default {
 }
 
 .right {
-	background-color: #2EBFAB;
+	background-color: #2ebfab;
 	border-radius: 20rpx 20rpx 0 20rpx;
 	color: white;
 	text-align: right;

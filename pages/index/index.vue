@@ -6,7 +6,10 @@
 		</u-navbar>
 		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
 			<view id="dialogs" class="dialog-container">
-				<tsu-dialog v-for="(dialog, index) of dialogs" :key="index" :direction="dialog.direction">{{ dialog.text }}</tsu-dialog>
+				<tsu-dialog v-for="(dialog, index) of dialogs" :key="index" :direction="dialog.direction">
+					<image class="dialog-image" v-if="dialog.content === '#image'" :src="dialog.src" mode="aspectFit" lazy-load="true"></image>
+					<view v-else>{{ dialog.content }}</view>
+				</tsu-dialog>
 			</view>
 		</scroll-view>
 		<view v-if="showLoading" class="loading-wrapp">
@@ -32,7 +35,7 @@ export default {
 		return {
 			scrollTop: 0,
 			answerHeight: '160rpx',
-			querySource: 'daily', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
+			querySource: 'information', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
 			queries: null,
 			answerWidgets: {
 				type: 'textfield',
@@ -44,14 +47,19 @@ export default {
 		};
 	},
 	methods: {
+		getDialogContent(dialog) {
+			if (dialog.content === '#image') {
+			}
+			return dialog.content;
+		},
 		askQuestion(queryIndex) {
 			let toAsk = this.queries[this.queryIndex];
-			this.addDialog({ text: toAsk.text, direction: 'left' });
+			this.addDialog(toAsk);
 			this.answerWidgets = toAsk;
 			while (toAsk.post) {
 				this.queryIndex++;
 				toAsk = this.queries[this.queryIndex];
-				this.addDialog({ text: toAsk.text, direction: 'left' });
+				this.addDialog(toAsk);
 				this.answerWidgets = toAsk;
 			}
 		},
@@ -76,17 +84,6 @@ export default {
 			query.select('#scrollview').boundingClientRect();
 			query.select('#dialogs').boundingClientRect();
 			query.exec(res => {
-				// if (res[1].height > res[0].height) {
-				// 	const tweenDuration = 50;
-				// 	const scrollDistance = res[1].height - res[0].height - that.scrollTop;
-				// 	const velocity = scrollDistance / tweenDuration;
-				// 	let tween = setTimeout(() => {
-				// 		that.scrollTop += velocity;
-				// 	}, 1);
-				// 	setInterval(() => {
-				// 		clearTimeout(tween);
-				// 	}, tweenDuration);
-				// }
 				if (res[1].height > res[0].height) {
 					that.scrollTop = res[1].height - res[0].height + 20;
 				}
@@ -94,7 +91,7 @@ export default {
 		},
 		nextDialog(params) {
 			const loadingAnimationTime = 600;
-			this.addDialog({ text: params.value, direction: 'right' });
+			this.addDialog({ content: params.value, direction: 'right' });
 			this.showLoading = true;
 			setTimeout(() => {
 				// 增加一个子问题
@@ -148,6 +145,10 @@ export default {
 
 .dialog-container {
 	padding-bottom: 20rpx;
+}
+
+.dialog-image {
+	max-height: 200rpx;
 }
 
 .robot-avatar {

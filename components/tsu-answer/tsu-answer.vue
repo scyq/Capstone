@@ -24,7 +24,23 @@
 			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'rating'">
-			<u-button class="common-btn rating-btn" v-for="(num, index) of [1, 2, 3, 4, 5]" type="primary" :text="num" :key="index" @click="clickBtn(num)"></u-button>
+			<u-button class="common-btn rating-btn" v-for="num of answerWidgets.widgets" type="primary" :text="num" :key="num" @click="clickBtn(num)"></u-button>
+		</view>
+		<view v-else-if="answerWidgets.type === 'textSelection'">
+			<u-popup :show="popup" mode="bottom" round="20">
+				<view class="text-selection">
+					<checkbox-group @change="checkboxChange">
+						<label class="checkbox-line" v-for="item in answerWidgets.widgets" :key="item">
+							<view><checkbox :value="item" :checked="item.checked" /></view>
+							<view>
+								<span style="font-weight: bold;">{{ item.bold }}</span>
+								<span>{{ item.normal }}</span>
+							</view>
+						</label>
+					</checkbox-group>
+					<button style="margin-bottom: 20rpx; background: #2EBFAB; color: white;" @click="confirmPopup">确认</button>
+				</view>
+			</u-popup>
 		</view>
 	</view>
 </template>
@@ -35,7 +51,8 @@ export default {
 	data() {
 		return {
 			value: '',
-			citySelector: false
+			citySelector: false,
+			popup: true
 		};
 	},
 	props: {
@@ -92,6 +109,22 @@ export default {
 		},
 		openCitySelector() {
 			this.citySelector = true;
+		},
+		checkboxChange(e) {
+			this.value = e.detail.value;
+		},
+		confirmPopup() {
+			this.value = this.value
+				.map(item => {
+					let res = item.bold;
+					if (item.normal) {
+						res += item.normal;
+					}
+					return res;
+				})
+				.join(';');
+			this.popup = false;
+			this.nextDialog();
 		}
 	},
 	computed: {}
@@ -176,5 +209,20 @@ export default {
 	width: 80rpx;
 	height: 80rpx;
 	font-weight: bold;
+}
+
+.text-selection {
+	padding: 50rpx;
+	height: 90vh;
+}
+
+.uni-list-cell {
+	justify-content: flex-start;
+}
+
+.checkbox-line {
+	display: flex;
+	flex-direction: row;
+	margin: 30rpx;
 }
 </style>
