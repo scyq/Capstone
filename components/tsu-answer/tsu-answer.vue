@@ -12,7 +12,7 @@
 			<uni-icons type="calendar" size="30" @click="openCalendar"></uni-icons>
 		</view>
 		<view class="flex-row slider" v-else-if="answerWidgets.type === 'numberSelection'">
-			<slider style="width: 100%;" :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" @change="sliderChange" step="1" show-value="true" :value="1" />
+			<slider style="width: 100%;" :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" @change="sliderChange" step="1" show-value="true" :value="0" />
 			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
 		</view>
 		<view v-else-if="answerWidgets.type === 'city'">
@@ -20,7 +20,13 @@
 			<uni-icons type="location" size="30" @click="openCitySelector"></uni-icons>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'numberInput'">
-			<uni-number-box :min="answerWidgets.widgets[0]" :max="answerWidgets.widgets[1]" :value="answerWidgets.widgets[2]" @change="numberInputChange"></uni-number-box>
+			<uni-number-box
+				style="margin-right: 20rpx;"
+				:min="answerWidgets.widgets[0]"
+				:max="answerWidgets.widgets[1]"
+				:value="answerWidgets.widgets[2]"
+				@change="numberInputChange"
+			></uni-number-box>
 			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
 		</view>
 		<view class="flex-row" v-else-if="answerWidgets.type === 'rating'">

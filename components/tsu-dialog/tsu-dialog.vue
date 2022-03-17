@@ -2,7 +2,7 @@
 	<view class="bubble" :class="{ rightBubble: direction === 'right' }">
 		<view class="message" :class="{ left: direction === 'left', right: direction === 'right' }">
 			<slot style="float: left;"></slot>
-			<view v-if="direction === 'right'" style="margin-left: 8rpx;"><uni-icons type="compose" color="white" size="20"></uni-icons></view>
+			<!-- <view v-if="direction === 'right'" style="margin-left: 8rpx;"><uni-icons type="compose" color="white" size="20"></uni-icons></view> -->
 		</view>
 	</view>
 </template>

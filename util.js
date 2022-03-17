@@ -19,7 +19,11 @@ export function getQueries() {
 		widgets: [1, 6]
 	}];
 
-	return [{
+	return [
+		{
+			content: "#video"
+		},
+		{
 			content: '您的编号是？',
 			type: 'textfield',
 			widgets: null
@@ -59,12 +63,12 @@ export function getQueries() {
 		{
 			content: "您母亲的年龄是多少岁",
 			type: "numberInput",
-			widgets: [20, 75, 35]
+			widgets: [20, 75, 0]
 		},
 		{
 			content: "您父亲的年龄是多少岁",
 			type: "numberInput",
-			widgets: [22, 75, 35]
+			widgets: [22, 75, 0]
 		},
 		{
 			content: '您母亲的最高学历是什么',
@@ -139,8 +143,7 @@ export function getDailyScale() {
 		}
 	];
 
-	const ifShared = [
-		{
+	const ifShared = [{
 			content: '您是和谁分享分享的？',
 			type: 'buttons',
 			widgets: ['爸爸', '妈妈', '其他家人', '老师', '同学', '朋友']
@@ -243,6 +246,9 @@ export function getDailyScale() {
 		{
 			content: '你不开心的原因是什么（发生了什么事情让你不开心）？',
 			type: 'textfield'
+		},
+		{
+			content: "感谢您今天的填写"
 		}
 	];
 }

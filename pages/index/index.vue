@@ -8,6 +8,16 @@
 			<view id="dialogs" class="dialog-container">
 				<tsu-dialog v-for="(dialog, index) of dialogs" :key="index" :direction="dialog.direction">
 					<image class="dialog-image" v-if="dialog.content === '#image'" :src="dialog.src" mode="aspectFit" lazy-load="true"></image>
+					<video
+						v-else-if="dialog.content === '#video'"
+						id="myVideo"
+						src="https://img.cdn.aliyun.dcloud.net.cn/guide/uniapp/%E7%AC%AC1%E8%AE%B2%EF%BC%88uni-app%E4%BA%A7%E5%93%81%E4%BB%8B%E7%BB%8D%EF%BC%89-%20DCloud%E5%AE%98%E6%96%B9%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B@20200317.mp4"
+						@error="videoErrorCallback"
+						:danmu-list="danmuList"
+						enable-danmu
+						danmu-btn
+						controls
+					></video>
 					<view v-else>{{ dialog.content }}</view>
 				</tsu-dialog>
 			</view>
@@ -33,6 +43,7 @@ export default {
 	},
 	data() {
 		return {
+			postPermission: true,
 			scrollTop: 0,
 			answerHeight: '160rpx',
 			querySource: 'information', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
@@ -90,29 +101,33 @@ export default {
 			});
 		},
 		nextDialog(params) {
-			const loadingAnimationTime = 600;
-			this.addDialog({ content: params.value, direction: 'right' });
-			this.showLoading = true;
-			setTimeout(() => {
-				// 增加一个子问题
-				if (params.side) {
-					this.queries.splice(this.queryIndex + 1, 0, ...params.side);
-				}
-				this.queryIndex++;
-				if (this.queryIndex >= this.queries.length) {
-					switch (this.querySource) {
-						case 'information':
-							this.querySource = 'daily';
-							break;
-						default:
-							break;
+			if (this.postPermission) {
+				this.postPermission = false;
+				const loadingAnimationTime = 600;
+				this.addDialog({ content: params.value, direction: 'right' });
+				this.showLoading = true;
+				setTimeout(() => {
+					// 增加一个子问题
+					if (params.side) {
+						this.queries.splice(this.queryIndex + 1, 0, ...params.side);
 					}
-					this.queryIndex = 0;
-					this.queries = this.getQueriesBySource(this.querySource);
-				}
-				this.askQuestion();
-				this.showLoading = false;
-			}, loadingAnimationTime);
+					this.queryIndex++;
+					if (this.queryIndex >= this.queries.length) {
+						switch (this.querySource) {
+							case 'information':
+								this.querySource = 'daily';
+								break;
+							default:
+								break;
+						}
+						this.queryIndex = 0;
+						this.queries = this.getQueriesBySource(this.querySource);
+					}
+					this.askQuestion();
+					this.showLoading = false;
+					this.postPermission = true;
+				}, loadingAnimationTime);
+			}
 		},
 		addDialog(dialog) {
 			this.dialogs.push(dialog);
