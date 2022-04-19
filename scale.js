@@ -1,4 +1,9 @@
 // 信息收集问卷内容
+/*
+	每一个对话气泡应该是一个JavaScript对象
+	其中content确定的是该气泡内部的内容，如果是以#开头则代表是一个特殊对象，目前#image代表是图片，#video代表是视频
+	type和widgets共同决定了回复组件是什么
+*/
 export function getQueries() {
 
 	const sideQueries5 = [{
@@ -19,11 +24,7 @@ export function getQueries() {
 		widgets: [1, 6]
 	}];
 
-	return [
-		{
-			content: "#video"
-		},
-		{
+	return [{
 			content: '您的编号是？',
 			type: 'textfield',
 			widgets: null
@@ -96,23 +97,23 @@ export function getQueries() {
 // 日常情绪调查问卷
 export function getDailyScale() {
 	const ifSharedAndReply = [{
-			content: '对方是如何回复你的？',
+			content: '可否从以下内容中选择最接近的？',
 			type: 'textSelection',
-			widgets: [
-
-				{
-					bold: '提供不同的视角和看法'
+			widgets: [{
+					bold: '提供解释、帮助我理解当下的状况',
+					normal: '(比如提供不同的视角和看法、帮我分析事情的原因、让我对问题有更多的理解)'
 				},
 				{
-					bold: '提供解决问题的建议和方法'
+					bold: '提供解决问题的建议和方法',
+					normal: '（比如和我讨论如何解决问题，和我分享ta遇到类似问题是如何处理的、给我一些让事情更好的建议）'
 				},
 				{
 					bold: '鼓励我分享和表达自己的情绪和感受',
-					normal: '（比如倾听我谈论或表达我的感受、帮我弄清楚我感受是什么）'
+					normal: '（比如倾听我谈论或表达我的感受、帮我弄清楚我感受是什么、鼓励我把不开心的情绪发泄处理）'
 				},
 				{
 					bold: '在情感上对我表示理解、支持和鼓励',
-					normal: '（比如用语言表达对我爱和关怀、给我拥抱）'
+					normal: '（比如用语言表达对我爱和关怀、给我拥抱、安慰我一起都会好起来、逗我笑以此来让我感觉好一些、和我一起做一些好晚的事情让我放松下来）'
 				},
 				{
 					bold: '对我进行说教',
@@ -128,11 +129,11 @@ export function getDailyScale() {
 				},
 				{
 					bold: '埋怨、责怪、责骂或者惩罚我',
-					nomal: '（例如，对我发脾气生气或对我大吼大叫，或者告诉我如果再不能控制的感情就要惩罚我）'
+					nomal: '（例如，对我发脾气生气或对我大吼大叫，或者告诉我如果再不能控制的情绪就要惩罚我、因为我情绪不好责骂我）'
 				},
 				{
 					bold: 'Ta也变得非常不舒服和不安，或者不愿意/不想面对我的不开心的情绪、回避我的消极情绪',
-					normal: '（例如，ta也变得很焦虑或紧张；或者ta说不要跟我讲这些不开心的事情因为听了之后我也很烦）'
+					normal: '（例如，ta也变得很焦虑或紧张；或者ta说不要跟我讲这些不开心的事情因为听了之后ta也很烦）'
 				}
 			]
 		},
@@ -168,7 +169,7 @@ export function getDailyScale() {
 			}
 		},
 		{
-			content: '你为什么跟ta分享你的心情和感感受？为了获得什么呢？',
+			content: '你为什么跟ta分享你的心情和感感受？为了获得什么呢？\n可否从以下内容选择最接近的？',
 			type: 'buttons',
 			widgets: ['建议', '帮助', '信息', '同情', '关怀', '理解', '鼓励']
 		}

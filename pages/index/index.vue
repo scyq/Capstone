@@ -15,7 +15,6 @@
 						@error="videoErrorCallback"
 						:danmu-list="danmuList"
 						enable-danmu
-						danmu-btn
 						controls
 					></video>
 					<view v-else>{{ dialog.content }}</view>
@@ -34,7 +33,7 @@
 </template>
 
 <script>
-import { getQueries, getDailyScale } from '../../util.js';
+import { getQueries, getDailyScale } from '../../scale.js';
 
 export default {
 	onLoad() {

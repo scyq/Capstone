@@ -2,6 +2,7 @@
 	<view class="bubble" :class="{ rightBubble: direction === 'right' }">
 		<view class="message" :class="{ left: direction === 'left', right: direction === 'right' }">
 			<slot style="float: left;"></slot>
+			<!-- 下面注释的一行是提供修改的icon button，目前无功能先注释 -->
 			<!-- <view v-if="direction === 'right'" style="margin-left: 8rpx;"><uni-icons type="compose" color="white" size="20"></uni-icons></view> -->
 		</view>
 	</view>
