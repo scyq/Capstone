@@ -33,19 +33,24 @@
 </template>
 
 <script>
-import { getQueries, getDailyScale } from '../../scale.js';
+import { getQueries, getDailyScale, getTest } from '../../scale.js';
 
 export default {
 	onLoad() {
-		this.queries = this.getQueriesBySource(this.querySource);
+		if (this.testMode) {
+			this.queries = getTest();
+		} else {
+			this.queries = this.getQueriesBySource(this.querySource);
+		}
 		this.askQuestion();
 	},
 	data() {
 		return {
+			testMode: false, // 是否开启调试模式
 			postPermission: true,
 			scrollTop: 0,
 			answerHeight: '160rpx',
-			querySource: 'information', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
+			querySource: 'daily', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
 			queries: null,
 			answerWidgets: {
 				type: 'textfield',

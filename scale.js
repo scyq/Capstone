@@ -96,7 +96,12 @@ export function getQueries() {
 
 // 日常情绪调查问卷
 export function getDailyScale() {
+
 	const ifSharedAndReply = [{
+			content: "ta具体是怎么回复你的？",
+			type: 'textfield'
+		},
+		{
 			content: '可否从以下内容中选择最接近的？',
 			type: 'textSelection',
 			widgets: [{
@@ -139,15 +144,26 @@ export function getDailyScale() {
 		},
 		{
 			content: 'Ta的回复在多大程度上有助于你的情绪恢复？',
+			post: true
+		},
+		{
+			content: '#image',
+			src: "../../static/feedbackRating.png",
 			type: 'rating',
-			widgets: 7
+			widgets: 7,
+		},
+		{
+			content: "你为什么觉得对你情绪调节有帮助？（或者为什么觉得没有帮助，请详细描述）",
+			type: "textfield"
 		}
 	];
 
 	const ifShared = [{
 			content: '您是和谁分享分享的？',
 			type: 'buttons',
-			widgets: ['爸爸', '妈妈', '其他家人', '老师', '同学', '朋友']
+			widgets: ['爸爸', '妈妈', '祖父母', '兄弟姐妹', '其他家人', '班主任',
+				'其它老师', '同学', '校外朋友'
+			]
 		},
 		{
 			content: '分享对象的性别是？',
@@ -169,14 +185,37 @@ export function getDailyScale() {
 			}
 		},
 		{
-			content: '你为什么跟ta分享你的心情和感感受？为了获得什么呢？\n可否从以下内容选择最接近的？',
-			type: 'buttons',
-			widgets: ['建议', '帮助', '信息', '同情', '关怀', '理解', '鼓励']
-		}
+			content: "你为什么跟ta分享你的心情和感感受？为了获得什么呢？",
+			type: 'textfield',
+		},
+		{
+			content: '可否从以下内容中选择最接近的？',
+			type: 'textSelection',
+			widgets: [{
+					bold: '情感上的支持',
+					normal: '（比如给与我安慰、鼓励、支持、关心、理解、爱、温暖、认可）'
+				},
+				{
+					bold: '认知上的帮助',
+					normal: '（比如帮助我分析和理解我的情绪；帮我分析我不开心的事情、促进我对情绪或者对事情的原因有新的认识；帮助对自己和他人的动机和行为有更多理解；帮助我理清楚我的目标；促进我理解这件事情的意义、对我的影响等）'
+				},
+				{
+					bold: '行动上的建议',
+					normal: '（比如帮助我找到解决问题的办法；和我分享他们遇到类似的事情时如何处理的；给与我一些解决问题的建议）'
+				}
+			]
+		},
 	];
 
-
 	return [{
+			content: "您的序号是？",
+			type: "textfield"
+		},
+		{
+			content: "您的姓名是？",
+			type: "textfield"
+		},
+		{
 			content: '今天你在多大程度上经历下面的情绪？',
 			post: true
 		},
@@ -186,7 +225,7 @@ export function getDailyScale() {
 			post: true
 		},
 		{
-			content: '紧张？',
+			content: '生气/愤怒/不满？',
 			type: 'rating',
 			widgets: 5
 		},
@@ -196,44 +235,38 @@ export function getDailyScale() {
 			widgets: 5
 		},
 		{
-			content: '担心？',
+			content: '焦虑/担心？',
 			type: 'rating',
 			widgets: 5
 		},
 		{
-			content: '焦虑？',
+			content: '难过/伤心？',
 			type: 'rating',
 			widgets: 5
 		},
 		{
-			content: '生气？',
+			content: '挫败/沮丧？',
 			type: 'rating',
 			widgets: 5
 		},
 		{
-			content: '愤怒？',
+			content: '羞愧？',
 			type: 'rating',
 			widgets: 5
 		},
 		{
-			content: '敌意？',
+			content: '内疚？',
 			type: 'rating',
 			widgets: 5
 		},
 		{
-			content: '难过？',
+			content: '嫉妒？',
 			type: 'rating',
 			widgets: 5
 		},
 		{
-			content: '沮丧？',
-			type: 'rating',
-			widgets: 5
-		},
-		{
-			content: '失望？',
-			type: 'rating',
-			widgets: 5
+			content: "因为什么事让你不开心？（请详细描述事情发生的经过（包括时间 地点 和具体发生的事情））",
+			type: "textfield"
 		},
 		{
 			content: '今天你跟其他人分享你不开心、不愉快的心情了吗？',
@@ -245,11 +278,22 @@ export function getDailyScale() {
 			}
 		},
 		{
-			content: '你不开心的原因是什么（发生了什么事情让你不开心）？',
-			type: 'textfield'
-		},
-		{
 			content: "感谢您今天的填写"
 		}
 	];
+}
+
+
+export function getTest() {
+	return [{
+		content: '分享的方式是什么？',
+		type: 'buttons',
+		widgets: ['面对面', '语音电话', '视频聊天', '短消息']
+	}, {
+		content: '您是和谁分享分享的？',
+		type: 'buttons',
+		widgets: ['爸爸', '妈妈', '祖父母', '兄弟姐妹', '其他家人', '班主任',
+			'其它老师', '同学', '校外朋友'
+		]
+	}, ]
 }
