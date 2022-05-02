@@ -2,7 +2,7 @@
 	<view class="chat">
 		<u-navbar rightIcon="setting" height="66px">
 			<view class="u-nav-slot" slot="left"><image class="robot-avatar" src="../../static/robot1.png"></image></view>
-			<view class="u-nav-slot" style="display: flex; flex-direction: column; align-items: center;" slot="right"><uni-icons type="gear" size="30"></uni-icons></view>
+			<view class="u-nav-slot" style="display: flex; flex-direction: column; align-items: center;" slot="right" @click="more"><uni-icons type="more" size="30"></uni-icons></view>
 		</u-navbar>
 		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
 			<view id="dialogs" class="dialog-container">
@@ -62,6 +62,11 @@ export default {
 		};
 	},
 	methods: {
+		more() {
+			uni.navigateTo({
+				url: "../welcome/welcome?interactive=0"
+			})
+		},
 		getDialogContent(dialog) {
 			if (dialog.content === '#image') {
 			}

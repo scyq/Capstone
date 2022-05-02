@@ -98,7 +98,7 @@ export function getQueries() {
 export function getDailyScale() {
 
 	const ifSharedAndReply = [{
-			content: "ta具体是怎么回复你的？",
+			content: "ta具体是怎么回复你的？（请详细描述过程，比如对方说了什么？）",
 			type: 'textfield'
 		},
 		{
@@ -137,13 +137,13 @@ export function getDailyScale() {
 					nomal: '（例如，对我发脾气生气或对我大吼大叫，或者告诉我如果再不能控制的情绪就要惩罚我、因为我情绪不好责骂我）'
 				},
 				{
-					bold: 'Ta也变得非常不舒服和不安，或者不愿意/不想面对我的不开心的情绪、回避我的消极情绪',
+					bold: 'ta也变得非常不舒服和不安，或者不愿意/不想面对我的不开心的情绪、回避我的消极情绪',
 					normal: '（例如，ta也变得很焦虑或紧张；或者ta说不要跟我讲这些不开心的事情因为听了之后ta也很烦）'
 				}
 			]
 		},
 		{
-			content: 'Ta的回复在多大程度上有助于你的情绪恢复？',
+			content: 'ta的回复在多大程度上有助于你的情绪恢复？（图片是选项数字的解释）',
 			post: true
 		},
 		{
@@ -185,11 +185,11 @@ export function getDailyScale() {
 			}
 		},
 		{
-			content: "你为什么跟ta分享你的心情和感感受？为了获得什么呢？",
+			content: "你为什么跟ta分享你的心情和感受？为了获得什么呢？（或者你分享的出发点是什么，请详细描述）",
 			type: 'textfield',
 		},
 		{
-			content: '可否从以下内容中选择最接近的？',
+			content: '可否从以下内容中选择最接近的？（可多选）',
 			type: 'textSelection',
 			widgets: [{
 					bold: '情感上的支持',
@@ -216,7 +216,7 @@ export function getDailyScale() {
 			type: "textfield"
 		},
 		{
-			content: '今天你在多大程度上经历下面的情绪？',
+			content: '今天你在多大程度上经历了下面的情绪？（图片是选项数字的解释）',
 			post: true
 		},
 		{
@@ -265,7 +265,7 @@ export function getDailyScale() {
 			widgets: 5
 		},
 		{
-			content: "因为什么事让你不开心？（请详细描述事情发生的经过（包括时间 地点 和具体发生的事情））",
+			content: "因为什么事让你不开心？（请详细描述事情发生的经过，包括时间、地点和具体发生的事情）",
 			type: "textfield"
 		},
 		{

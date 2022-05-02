@@ -9,20 +9,27 @@
 				<view class="promise-txt">保证信息安全</view>
 			</view>
 		</view>
-		<button class="btn" @click="start()">开始</button>
+		<button class="btn" @click="start()">{{ showButton ? '开始' : '返回' }}</button>
 	</view>
 </template>
 
 <script>
 export default {
+	onLoad(option) {
+		if (!parseInt(option.interactive)) {
+			this.showButton = false;
+		}
+	},
 	data() {
-		return {};
+		return {
+			showButton: true
+		};
 	},
 	methods: {
 		start() {
 			uni.navigateTo({
-				url: "../index/index"
-			})
+				url: '../index/index'
+			});
 		}
 	}
 };

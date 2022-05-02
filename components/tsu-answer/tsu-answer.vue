@@ -10,7 +10,7 @@
 			<view v-if="singleButton" class="flex-row">
 				<u-button class="common-btn btn" v-for="(btn, index) of answerWidgets.widgets" type="primary" :text="btn" :key="index" @click="clickBtn(btn)"></u-button>
 			</view>
-			<view v-else class="doubleRow" >
+			<view v-else class="doubleRow">
 				<view class="flex-row" v-for="(btns, index) of answerWidgets.newWidgets" :key="index">
 					<u-button class="common-btn btn" v-for="(btn, i) of btns" type="primary" :text="btn" :key="i" @click="clickBtn(btn)"></u-button>
 				</view>
@@ -92,10 +92,12 @@ export default {
 	},
 	mounted() {},
 	updated() {
+		const popDelay = 500; // 问题到弹窗的延时，单位ms
+
 		if (this.answerWidgets.type === 'textSelection') {
 			setTimeout(() => {
 				this.popup = true;
-			}, 2000);
+			}, popDelay);
 		} else if (this.answerWidgets.type === 'buttons') {
 			// 计算按钮总字数，判断是否需要排列两行
 			let total_chars = 0;
@@ -157,7 +159,6 @@ export default {
 		},
 		checkboxChange(e) {
 			this.value = e.detail.value;
-			this.popup = false;
 		},
 		confirmPopup() {
 			this.value = this.value
