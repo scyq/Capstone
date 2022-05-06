@@ -15,10 +15,10 @@
 
 <script>
 export default {
-	onLoad(option) {
-		if (!parseInt(option.interactive)) {
-			this.showButton = false;
-		}
+	onShow() {
+		const pages = getCurrentPages();
+		const lastPage = pages[pages.length - 2];
+		this.showButton = lastPage ? false : true;
 	},
 	data() {
 		return {

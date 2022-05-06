@@ -2,7 +2,9 @@
 	<view class="chat">
 		<u-navbar rightIcon="setting" height="66px">
 			<view class="u-nav-slot" slot="left"><image class="robot-avatar" src="../../static/robot1.png"></image></view>
-			<view class="u-nav-slot" style="display: flex; flex-direction: column; align-items: center;" slot="right" @click="more"><uni-icons type="more" size="30"></uni-icons></view>
+			<view class="u-nav-slot" style="display: flex; flex-direction: column; align-items: center;" slot="right" @click="more">
+				<uni-icons type="more" size="30"></uni-icons>
+			</view>
 		</u-navbar>
 		<scroll-view id="scrollview" class="container" scroll-y="true" :scroll-top="scrollTop">
 			<view id="dialogs" class="dialog-container">
@@ -34,6 +36,7 @@
 
 <script>
 import { getQueries, getDailyScale, getTest } from '../../scale.js';
+import { newRecord } from '../../net.js';
 
 export default {
 	onLoad() {
@@ -47,7 +50,7 @@ export default {
 	data() {
 		return {
 			testMode: false, // 是否开启调试模式
-			postPermission: true,
+			postPermission: true, // 防止连续点击
 			scrollTop: 0,
 			answerHeight: '160rpx',
 			querySource: 'daily', // 用于控制问卷的内容，可以是information（用于收集个人信息），可以是daily（调查每日情绪）
@@ -64,8 +67,8 @@ export default {
 	methods: {
 		more() {
 			uni.navigateTo({
-				url: "../welcome/welcome?interactive=0"
-			})
+				url: '../welcome/welcome?interactive=false'
+			});
 		},
 		getDialogContent(dialog) {
 			if (dialog.content === '#image') {
@@ -111,10 +114,19 @@ export default {
 		},
 		nextDialog(params) {
 			if (this.postPermission) {
+				if (params.callback) {
+					params.callback(this, params);
+				}
 				this.postPermission = false;
 				const loadingAnimationTime = 600;
 				this.addDialog({ content: params.value, direction: 'right' });
 				this.showLoading = true;
+				newRecord(
+					this.scaleId ? this.scaleId : `newScale${new Date().getTime()}`,
+					this.username ? this.username : 'unknown',
+					this.queries[this.queryIndex].content,
+					params.value
+				);
 				setTimeout(() => {
 					// 增加一个子问题
 					if (params.side) {

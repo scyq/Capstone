@@ -209,11 +209,18 @@ export function getDailyScale() {
 
 	return [{
 			content: "您的序号是？",
-			type: "textfield"
+			type: "textfield",
+			callback: (pointer, params) => {
+				// pointer 把index的指针传进来
+				pointer.scaleId = params.value;
+			}
 		},
 		{
 			content: "您的姓名是？",
-			type: "textfield"
+			type: "textfield",
+			callback: (pointer, params) => {
+				pointer.username = params.value;
+			}
 		},
 		{
 			content: '今天你在多大程度上经历了下面的情绪？（图片是选项数字的解释）',
@@ -248,6 +255,11 @@ export function getDailyScale() {
 			content: '挫败/沮丧？',
 			type: 'rating',
 			widgets: 5
+		},
+		{
+			content: '#image',
+			src: "../../static/emoRating.png",
+			post: true
 		},
 		{
 			content: '羞愧？',
@@ -290,7 +302,7 @@ export function getTest() {
 		type: 'buttons',
 		widgets: ['面对面', '语音电话', '视频聊天', '短消息']
 	}, {
-		content: '您是和谁分享分享的？',
+		content: '您是和谁分享分享的？（如果您今天跟不同人分享了，请选择一个最主要的分享对象）',
 		type: 'buttons',
 		widgets: ['爸爸', '妈妈', '祖父母', '兄弟姐妹', '其他家人', '班主任',
 			'其它老师', '同学', '校外朋友'

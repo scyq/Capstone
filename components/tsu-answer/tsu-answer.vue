@@ -140,6 +140,9 @@ export default {
 					res.side = this.answerWidgets.side[this.value];
 				}
 			}
+			if (this.answerWidgets.callback) {
+				res.callback = this.answerWidgets.callback;
+			}
 			this.afterOption();
 			this.$emit('nextDialog', res);
 		},
