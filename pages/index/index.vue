@@ -79,11 +79,14 @@ export default {
 			let toAsk = this.queries[this.queryIndex];
 			this.addDialog(toAsk);
 			this.answerWidgets = toAsk;
-			while (toAsk.post) {
+			// 如果还有后续
+			if (toAsk.post) {
+				this.showLoading = true;
 				this.queryIndex++;
-				toAsk = this.queries[this.queryIndex];
-				this.addDialog(toAsk);
-				this.answerWidgets = toAsk;
+				setTimeout(() => {
+					this.showLoading = false;
+					this.askQuestion(queryIndex);
+				}, 1000);
 			}
 		},
 		getQueriesBySource(source) {
