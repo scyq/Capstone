@@ -106,7 +106,7 @@ export function getDailyScale() {
 			type: "textfield"
 		},
 		{
-			content: '可否从以下内容中选择最接近的？',
+			content: '可否从以下内容中选择最接近的？（可多选）',
 			type: 'textSelection',
 			widgets: [{
 					bold: '提供解释、帮助我理解当下的状况',
@@ -155,9 +155,6 @@ export function getDailyScale() {
 		{
 			content: "可以告诉我，你为什么觉得这些回复对你情绪调节有帮助或者没有帮助吗？",
 			type: "textfield"
-		}, {
-			content: "感谢你的分享！",
-			post: true
 		}
 	];
 
@@ -200,7 +197,7 @@ export function getDailyScale() {
 			type: "textfield"
 		},
 		{
-			content: '可否从以下内容中选择最接近的？',
+			content: '可否从以下内容中选择最接近的？（可多选）',
 			type: 'textSelection',
 			widgets: [{
 					bold: '情感上的支持',
@@ -215,12 +212,33 @@ export function getDailyScale() {
 					normal: '（比如帮助我找到解决问题的办法；和我分享他们遇到类似的事情时如何处理的；给与我一些解决问题的建议）'
 				}
 			]
-		},
-		{
-			content: "感谢你的分享！",
-			post: true
 		}
 	];
+
+	const notSkip = [{
+			content: "可以告诉我：你是因为什么事情不开心吗？",
+			post: true
+		},
+		{
+			content: "如果可以的话，请详细地跟我分享一下这件事情发生的经过（包括时间、地点、事情的起因、过程、结果等），特别是在这件事情当中你的感受和想法。",
+			type: "textfield"
+		},
+		{
+			content: '今天你跟其他人分享你不开心、不愉快的心情了吗？',
+			type: 'buttons',
+			widgets: ['有', '没有'],
+			side: {
+				'有': ifShared,
+				'没有': null
+			}
+		},
+	]
+
+	const emotionJudge = (pointer, params) => {
+		if (params.value !== "完全没有") {
+			pointer.skipScales = false;
+		}
+	}
 
 	return [{
 			content: "你好呀，很高兴可以与你对话！",
@@ -250,62 +268,58 @@ export function getDailyScale() {
 		{
 			content: '生气/愤怒/不满？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '害怕？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '焦虑/担忧？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '难过/伤心？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '挫败/沮丧？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '羞愧？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '内疚？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge
 		},
 		{
 			content: '嫉妒？',
 			type: 'buttons',
-			widgets: ['完全没有', '有一点', '非常多']
-		},
-		{
-			content: "可以告诉我：你是因为什么事情不开心吗？",
-			post: true
-		},
-		{
-			content: "如果可以的话，请详细地跟我分享一下这件事情发生的经过（包括时间、地点、事情的起因、过程、结果等），特别是在这件事情当中你的感受和想法。",
-			type: "textfield"
-		},
-		{
-			content: "感谢你的分享！",
-			post: true
-		},
-		{
-			content: '今天你跟其他人分享你不开心、不愉快的心情了吗？',
-			type: 'buttons',
-			widgets: ['有', '没有'],
-			side: {
-				'有': ifShared,
-				'没有': null
+			widgets: ['完全没有', '有一点', '非常多'],
+			callback: emotionJudge,
+			judge: (pointer) => {
+				if (!pointer.skipScales) {
+					return true;
+				}
+				return false;
+			},
+			judgeCallback: (pointer) => {
+				pointer.queries.splice(pointer.queryIndex + 1, 0, ...notSkip);
 			}
 		},
 		{

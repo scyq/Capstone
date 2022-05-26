@@ -143,6 +143,10 @@ export default {
 			if (this.answerWidgets.callback) {
 				res.callback = this.answerWidgets.callback;
 			}
+			if (this.answerWidgets.judge) {
+				res.judge = this.answerWidgets.judge;
+				res.judgeCallback = this.answerWidgets.judgeCallback;
+			}
 			this.afterOption();
 			this.$emit('nextDialog', res);
 		},

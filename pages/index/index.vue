@@ -61,7 +61,8 @@ export default {
 			},
 			queryIndex: 0,
 			dialogs: [],
-			showLoading: false
+			showLoading: false,
+			skipScales: true
 		};
 	},
 	methods: {
@@ -119,6 +120,11 @@ export default {
 			if (this.postPermission) {
 				if (params.callback) {
 					params.callback(this, params);
+				}
+				if (params.judge) {
+					if (params.judge(this)) {
+						params.judgeCallback(this);
+					}
 				}
 				this.postPermission = false;
 				const loadingAnimationTime = 600;
