@@ -38,6 +38,32 @@
 import { getQueries, getDailyScale, getTest } from '../../scale.js';
 import { newRecord } from '../../net.js';
 
+const getFormatTime = () => {
+	const num2padded = num => {
+		return (num + '').padStart(2, '0');
+	};
+
+	const date = new Date();
+	let year = date.getFullYear();
+	let month = date.getMonth() + 1;
+	let day = date.getDate();
+	let hours = date.getHours();
+	let minutes = date.getMinutes();
+	let seconds = date.getSeconds();
+
+	month = num2padded(month);
+	day = num2padded(day);
+	hours = num2padded(hours);
+	minutes = num2padded(minutes);
+	seconds = num2padded(seconds);
+
+	return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${hours}:${minutes}:${seconds}`;
+};
+
+function uuidv4() {
+	return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+}
+
 export default {
 	onLoad() {
 		if (this.testMode) {
@@ -46,6 +72,7 @@ export default {
 			this.queries = this.getQueriesBySource(this.querySource);
 		}
 		this.askQuestion();
+		this.scaleId = uuidv4();
 	},
 	data() {
 		return {
@@ -62,7 +89,8 @@ export default {
 			queryIndex: 0,
 			dialogs: [],
 			showLoading: false,
-			skipScales: true
+			skipScales: true,
+			askTime: getFormatTime()
 		};
 	},
 	methods: {
@@ -80,6 +108,7 @@ export default {
 			let toAsk = this.queries[this.queryIndex];
 			this.addDialog(toAsk);
 			this.answerWidgets = toAsk;
+			this.askTime = getFormatTime();
 			// 如果还有后续
 			if (toAsk.post) {
 				this.showLoading = true;
@@ -130,12 +159,18 @@ export default {
 				const loadingAnimationTime = 600;
 				this.addDialog({ content: params.value, direction: 'right' });
 				this.showLoading = true;
-				newRecord(
-					this.scaleId ? this.scaleId : `newScale${new Date().getTime()}`,
-					this.username ? this.username : 'unknown',
-					this.queries[this.queryIndex].content,
-					params.value
-				);
+				if (!this.testMode) {
+					newRecord(
+						this.scaleId,
+						`${this.askTime}####${getFormatTime()}`,
+						this.school ? this.school : '尚未填写',
+						this.grade ? this.grade : '尚未填写',
+						this.classId ? this.classId : '尚未填写',
+						this.name ? this.name : '尚未填写',
+						this.queries[this.queryIndex].content,
+						params.value
+					);
+				}
 				setTimeout(() => {
 					// 增加一个子问题
 					if (params.side) {

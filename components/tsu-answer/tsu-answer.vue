@@ -2,7 +2,7 @@
 	<view class="answer">
 		<!-- textfield -->
 		<view class="textfield" v-if="answerWidgets.type === 'textfield'">
-			<input class="uni-input text-input" confirm-type="search" placeholder="请输入..." v-model="value" @input="changeValue" />
+			<input class="uni-input text-input" confirm-type="search" placeholder="请输入..." v-model="value" @input="changeValue" maxlength="-1"/>
 			<image class="confirm-btn" src="../../static/arrow.svg" @click="nextDialog"></image>
 		</view>
 		<!-- buttons -->
@@ -92,9 +92,14 @@ export default {
 	},
 	mounted() {},
 	updated() {
-		const popDelay = 500; // 问题到弹窗的延时，单位ms
+		const popDelay = 2000; // 问题到弹窗的延时，单位ms
+		if (this.answerWidgets.type !== 'textSelection') {
+			this.popup = false;
+		}
 
-		if (this.answerWidgets.type === 'textSelection') {
+
+		if (this.answerWidgets.type === 'textSelection' && !this.popup) {
+			console.log(1);
 			setTimeout(() => {
 				this.popup = true;
 			}, popDelay);
@@ -177,8 +182,8 @@ export default {
 					return res;
 				})
 				.join(';');
-			this.popup = false;
 			this.nextDialog();
+			this.popup = false;
 		}
 	},
 	computed: {}

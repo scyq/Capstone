@@ -1,12 +1,16 @@
 const host = "http://47.112.121.228:8000"
 
-export function newRecord(scale_id, username, question, answer) {
-	uni.request({
+export async function newRecord(scaleId, time, school, grade, classId, name, question, answer) {
+	const res = await uni.request({
 		url: host + "/newrecord/",
 		method: "POST",
 		data: {
-			scale_id,
-			username,
+			scale_id: scaleId,
+			time,
+			school,
+			grade,
+			class_id: classId,
+			name,
 			question,
 			answer
 		},
@@ -15,6 +19,8 @@ export function newRecord(scale_id, username, question, answer) {
 		},
 		fail: (res) => {
 			console.log(res);
+			newRecord(scaleId, time, school, grade, classId, name, question, answer);
 		}
-	})
+	});
+	return res;
 }
